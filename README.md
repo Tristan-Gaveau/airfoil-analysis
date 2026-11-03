@@ -4,7 +4,7 @@
 Je vais livrer un code Python qui calcule la portance d’un NACA 0012 avec la méthode des panneaux, validé contre XFOIL, puis une simulation Fluent comparée à ce code, avec une explication des écarts.
 
 ## Plan
-- [ ] Étape 1 : géométrie du NACA 0012
+- [x] Étape 1 : géométrie du NACA 0012
 - [ ] Étape 2 : méthode des panneaux
 - [ ] Étape 3 : validation contre XFOIL / données publiques
 - [ ] Étape 4 : simulation CFD sous Ansys Fluent
