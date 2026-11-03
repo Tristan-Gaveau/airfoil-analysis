@@ -5,12 +5,12 @@ Je vais livrer un code Python qui calcule la portance d’un NACA 0012 avec la m
 
 ## Plan
 - [x] Étape 1 : géométrie du NACA 0012
-- [ ] Étape 2 : méthode des panneaux
+- [x] Étape 2 : méthode des panneaux
 - [ ] Étape 3 : validation contre XFOIL / données publiques
 - [ ] Étape 4 : simulation CFD sous Ansys Fluent
 - [ ] Étape 5 : comparaison et conclusion
 
 ## Définition de "terminé"
 - Cl = 0 à α = 0°
-- Pente de Cl proche de 2π
+- Pente de Cl ≈ 2π(1 + 0,77·t/c) ≈ 6,9
 - Erreur chiffrée par rapport à la référence
