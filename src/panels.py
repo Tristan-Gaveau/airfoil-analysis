@@ -67,6 +67,41 @@ def resoudre_sources(x, y, alpha=0.0):
     Cp = 1 - Vt**2
     return lam, Vt, Cp, xc, yc, ds
 
+def resoudre_kutta(x, y, alpha=0.0):
+    x1, y1, x2, y2, ds, xc, yc, nx, ny = contours_panneaux(x, y)
+    N = len(xc)
+    tx, ty = ny, -nx
+
+    An = np.zeros((N, N)); At = np.zeros((N, N))   # sources
+    Bn = np.zeros((N, N)); Bt = np.zeros((N, N))   # vortex
+    for i in range(N):
+        for j in range(N):
+            if i == j:
+                An[i, j] = 0.5;  At[i, j] = 0.0
+                Bn[i, j] = 0.0;  Bt[i, j] = -0.5
+            else:
+                u, v = influence(xc[i], yc[i], x1[j], y1[j], x2[j], y2[j])
+                An[i, j] = u*nx[i] + v*ny[i]     # composante normale
+                At[i, j] = u*tx[i] + v*ty[i]     # composante tangentielle
+                uv, vv = -v, u
+                Bn[i, j] = uv*nx[i] + vv*ny[i]   # composante normale du vortex
+                Bt[i, j] = uv*tx[i] + vv*ty[i]   # composante tangentielle du vortex
+
+    M = np.zeros((N+1, N+1))
+    b = np.zeros(N+1)
+    M[:N, :N] = An
+    M[:N, N] = Bn.sum(axis=1)
+    b[:N] = -(np.cos(alpha) * nx + np.sin(alpha) * ny)
+    M[N, :N] = At[0] + At[N-1]
+    M[N, N] = Bt[0].sum() + Bt[N-1].sum()
+    b[N] = -(np.cos(alpha)*(tx[0]+tx[N-1]) + np.sin(alpha)*(ty[0]+ty[N-1]))
+
+    sol = np.linalg.solve(M, b)
+    lam, gamma = sol[:N], sol[N]
+    Vt = np.cos(alpha)*tx + np.sin(alpha)*ty + At @ lam + gamma*Bt.sum(axis=1)    
+    Cp = 1 - Vt**2
+    return lam, gamma, Vt, Cp, xc, yc, ds, nx, ny
+
 if __name__ == "__main__":
     N = 100
     theta_pts = np.linspace(2*np.pi, 0, N+1)   # sens horaire

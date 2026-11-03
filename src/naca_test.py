@@ -27,6 +27,8 @@ print("Flux total :", np.sum(lam*ds))
 print("Cp min :", Cp.min(), "à x =", xc[Cp.argmin()])
 print("Cp max :", Cp.max())
 print("Cl =", Cl, " Cd =", Cd)
+print("Antisymétrie de Vt :", np.max(np.abs(Vt + Vt[::-1])))   # attendu ~ 1e-15
+print("Symétrie de Cp :", np.max(np.abs(Cp - Cp[::-1])))       # attendu ~ 1e-15
 
 plt.plot(xc, Cp, '.-')
 plt.gca().invert_yaxis()          # convention aérodynamique : Cp négatif en haut
